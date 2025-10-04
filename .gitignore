@@ -1,0 +1,56 @@
+﻿# Dependencies
+/node_modules/
+/.npm
+/.yarn
+
+# Next.js
+/.next/
+/out/
+/dist/
+
+# Environment
+.env*
+!.env.example
+
+# Build outputs
+.next/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Database
+*.db
+*.sqlite
+/prisma/migrations/
+/prisma/dev.db
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Runtime
+.cache/
+.parcel-cache/
+
+# Coverage
+/coverage/
+.nyc_output/
+
+# Vercel
+.vercel/
+
+# Production
+deployments/
+
+# TypeScript
+*.tsbuildinfo
