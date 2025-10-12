@@ -120,3 +120,174 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Mobile Optimization Styles */
+@layer utilities {
+  /* Responsive text sizes */
+  .text-responsive-xs {
+    @apply text-xs sm:text-sm;
+  }
+  
+  .text-responsive-sm {
+    @apply text-sm sm:text-base;
+  }
+  
+  .text-responsive-base {
+    @apply text-base sm:text-lg;
+  }
+  
+  .text-responsive-lg {
+    @apply text-lg sm:text-xl;
+  }
+  
+  .text-responsive-xl {
+    @apply text-xl sm:text-2xl;
+  }
+  
+  .text-responsive-2xl {
+    @apply text-2xl sm:text-3xl;
+  }
+  
+  /* Responsive spacing */
+  .p-responsive {
+    @apply p-2 sm:p-4;
+  }
+  
+  .m-responsive {
+    @apply m-2 sm:m-4;
+  }
+  
+  .gap-responsive {
+    @apply gap-2 sm:gap-4;
+  }
+  
+  /* Responsive containers */
+  .container-responsive {
+    @apply max-w-7xl mx-auto px-2 sm:px-4;
+  }
+  
+  /* Mobile-friendly cards */
+  .card-mobile {
+    @apply rounded-lg shadow-sm hover:shadow-md transition-all duration-200;
+  }
+  
+  /* Touch-friendly buttons */
+  .btn-touch {
+    @apply min-h-[44px] min-w-[44px] touch-manipulation;
+  }
+  
+  /* Mobile charts */
+  .chart-mobile {
+    @apply h-[250px] sm:h-[300px] md:h-[400px];
+  }
+  
+  /* Responsive grids */
+  .grid-responsive-2 {
+    @apply grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4;
+  }
+  
+  .grid-responsive-3 {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4;
+  }
+  
+  /* Mobile form elements */
+  .input-mobile {
+    @apply w-full text-sm sm:text-base py-2 sm:py-3 px-3 sm:px-4;
+  }
+  
+  /* Mobile navigation */
+  .nav-mobile {
+    @apply flex flex-col sm:flex-row gap-2 sm:gap-4;
+  }
+  
+  /* Mobile badges */
+  .badge-mobile {
+    @apply text-xs px-2 py-1;
+  }
+  
+  /* Mobile scroll areas */
+  .scroll-mobile {
+    @apply max-h-[300px] sm:max-h-[400px] overflow-y-auto;
+  }
+  
+  /* Responsive tooltips */
+  .tooltip-mobile {
+    @apply text-xs sm:text-sm;
+  }
+}
+
+/* Custom scrollbar for mobile */
+@layer components {
+  .scrollbar-thin-mobile {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground)) hsl(var(--muted));
+  }
+  
+  .scrollbar-thin-mobile::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  
+  .scrollbar-thin-mobile::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+    border-radius: 2px;
+  }
+  
+  .scrollbar-thin-mobile::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground));
+    border-radius: 2px;
+  }
+  
+  .scrollbar-thin-mobile::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--foreground));
+  }
+}
+
+/* RTL support improvements */
+@layer utilities {
+  .rtl-safe {
+    direction: rtl;
+    text-align: right;
+  }
+  
+  .rtl-responsive {
+    @apply text-center sm:text-right;
+  }
+  
+  .rtl-flex {
+    @apply flex flex-col sm:flex-row-reverse;
+  }
+}
+
+/* Mobile performance optimizations */
+@media (max-width: 640px) {
+  /* Reduce animations on mobile for better performance */
+  * {
+    animation-duration: 0.2s !important;
+    transition-duration: 0.2s !important;
+  }
+  
+  /* Optimize images for mobile */
+  img {
+    content-visibility: auto;
+  }
+  
+  /* Improve touch targets */
+  button, .btn-touch {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Prevent horizontal scroll */
+  body {
+    overflow-x: hidden;
+  }
+  
+  /* Mobile-first font sizes */
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.25rem; }
+  h3 { font-size: 1.125rem; }
+  h4 { font-size: 1rem; }
+  h5 { font-size: 0.875rem; }
+  h6 { font-size: 0.75rem; }
+}

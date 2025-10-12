@@ -14,22 +14,22 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "amirsajjad Code Scaffold - AI-Powered Development",
-  description: "Modern Next.js scaffold optimized for AI-powered development with amirsajjad. Built with TypeScript, Tailwind CSS, and shadcn/ui.",
-  keywords: ["amirsajjad", "Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "AI development", "React"],
-  authors: [{ name: "amirsajjad Team" }],
+  title: "سیستم مانیتورینگ چاه‌های نفتی | WITSML",
+  description: "سیستم مانیتورینگ زنده چاه‌های نفتی با پشتیبانی از استاندارد WITSML. نمایش پارامترهای حفاری، نمودارهای پیشرفت و داده‌های فنی.",
+  keywords: ["مانیتورینگ", "نفت", "WITSML", "چاه نفت", "حفاری", "پارامترهای زنده", "داده", "نمودار", "پارامترهای فنی"],
+  authors: [{ name: "تیم توسعه نرم‌افزار" }],
   openGraph: {
-    title: "amirsajjad Code Scaffold",
-    description: "AI-powered development with modern React stack",
-    url: "https://chat.amirsajjad",
-    siteName: "amirsajjad",
+    title: "سیستم مانیتورینگ چاه‌های نفتی",
+    description: "سیستم مانیتورینگ زنده چاه‌های نفتی با استاندارد WITSML",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "amirsajjad Code Scaffold",
-    description: "AI-powered development with modern React stack",
+    title: "سیستم مانیتورینگ چاه‌های نفتی",
+    description: "سیستم مانیتورینگ زنده چاه‌های نفتی با استاندارد WITSML",
   },
+  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
+  themeColor: "#1e40af",
 };
 
 export default function RootLayout({
@@ -38,7 +38,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="fa" dir="rtl" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >

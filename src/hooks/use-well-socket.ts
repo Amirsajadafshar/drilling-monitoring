@@ -103,6 +103,11 @@ export function useWellSocket(wellId: string) {
       setIsConnected(false)
     }
 
+    ws.onerror = (error) => {
+      console.error('WebSocket error:', error)
+      setIsConnected(false)
+    }
+
     return () => {
       if (socketRef.current) {
         // Leave the well room

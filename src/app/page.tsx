@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
@@ -8,25 +8,11 @@ import { Progress } from '@/components/ui/progress'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Activity, Gauge, Thermometer, Droplets, Zap, TrendingUp, Clock, MapPin } from 'lucide-react'
+import { Activity, Gauge, Thermometer, Droplets, Zap, TrendingUp, Clock, MapPin, LogOut, Plus } from 'lucide-react'
 import { DrillingParametersChart } from '@/components/oil-well/drilling-parameters-chart'
 import { DepthProgressChart } from '@/components/oil-well/depth-progress-chart'
 import { WitsmlDataViewer } from '@/components/oil-well/witsml-data-viewer'
-
-interface WellData {
-  id: string
-  name: string
-  location: string
-  status: 'drilling' | 'producing' | 'completed' | 'planned'
-  depth: number
-  temperature: number
-  pressure: number
-  flowRate: number
-  witsmlVersion: string
-  lastUpdate: string
-  targetDepth?: number
-  spudDate?: string
-}
+import { useWellsStore, WellData } from '@/store/wells-store'
 
 interface DrillingParameter {
   name: string
@@ -46,61 +32,14 @@ interface WitsmlData {
 }
 
 export default function Home() {
-  const [wellData, setWellData] = useState<WellData[]>([])
-  const [selectedWell, setSelectedWell] = useState<WellData | null>(null)
-  const [loading, setLoading] = useState(true)
+  const { wells, selectedWell, setSelectedWell } = useWellsStore()
 
   useEffect(() => {
-    // Mock data for demonstration
-    const mockWellData: WellData[] = [
-      {
-        id: '1',
-        name: 'Well-A-01',
-        location: 'South Pars Field',
-        status: 'drilling',
-        depth: 3250,
-        targetDepth: 4100,
-        temperature: 85,
-        pressure: 4500,
-        flowRate: 0,
-        witsmlVersion: '2.1',
-        lastUpdate: '2024-01-15T10:30:00Z',
-        spudDate: '2023-10-15T00:00:00Z'
-      },
-      {
-        id: '2',
-        name: 'Well-B-02',
-        location: 'North Dome Field',
-        status: 'producing',
-        depth: 2800,
-        targetDepth: 2800,
-        temperature: 78,
-        pressure: 3800,
-        flowRate: 1250,
-        witsmlVersion: '2.1',
-        lastUpdate: '2024-01-15T10:45:00Z',
-        spudDate: '2023-08-20T00:00:00Z'
-      },
-      {
-        id: '3',
-        name: 'Well-C-03',
-        location: 'West Oil Field',
-        status: 'completed',
-        depth: 4100,
-        targetDepth: 4100,
-        temperature: 92,
-        pressure: 5200,
-        flowRate: 980,
-        witsmlVersion: '2.0',
-        lastUpdate: '2024-01-14T16:20:00Z',
-        spudDate: '2023-05-10T00:00:00Z'
-      }
-    ]
-    
-    setWellData(mockWellData)
-    setSelectedWell(mockWellData[0])
-    setLoading(false)
-  }, [])
+    // Auto-select the first well if none is selected
+    if (wells.length > 0 && !selectedWell) {
+      setSelectedWell(wells[0])
+    }
+  }, [wells, selectedWell, setSelectedWell])
 
   const getStatusColor = (status: WellData['status']) => {
     switch (status) {
@@ -161,31 +100,38 @@ export default function Home() {
     }
   }
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 mx-auto"></div>
-          <p className="mt-4 text-lg">در حال بارگذاری اطلاعات چاه‌های نفتی...</p>
-        </div>
-      </div>
-    )
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-2 sm:p-4">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">سیستم مانیتورینگ چاه‌های نفتی</h1>
-          <p className="text-gray-600">دریافت و نمایش اطلاعات مهندسی نفت با استاندارد WITSML</p>
+          {/* Header */}
+        <div className="mb-4 sm:mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="text-center sm:text-right">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">سیستم مانیتورینگ چاه‌های نفتی</h1>
+            <p className="text-sm sm:text-base text-gray-600">دریافت و نمایش اطلاعات مهندسی نفت با استاندارد WITSML</p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-2 self-center sm:self-auto">
+            <Button 
+              onClick={() => window.location.href = '/add-well'}
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              <Plus className="h-4 w-4 ml-2" />
+              افزودن چاه جدید
+            </Button>
+            <Button 
+              onClick={() => window.location.href = '/login'}
+              variant="outline"
+            >
+              <LogOut className="h-4 w-4 ml-2" />
+              خروج
+            </Button>
+          </div>
         </div>
 
         {/* Well Selection */}
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold mb-4">انتخاب چاه</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {wellData.map((well) => (
+        <div className="mb-4 sm:mb-6">
+          <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-center sm:text-right">انتخاب چاه</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+            {wells.map((well) => (
               <Card 
                 key={well.id} 
                 className={`cursor-pointer transition-all hover:shadow-lg ${
@@ -193,28 +139,31 @@ export default function Home() {
                 }`}
                 onClick={() => setSelectedWell(well)}
               >
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg">{well.name}</CardTitle>
-                    <Badge className={`${getStatusColor(well.status)} text-white`}>
+                <CardHeader className="pb-2 sm:pb-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    <CardTitle className="text-base sm:text-lg text-center sm:text-right">{well.name}</CardTitle>
+                    <Badge className={`${getStatusColor(well.status)} text-white text-xs sm:text-sm`}>
                       {getStatusText(well.status)}
                     </Badge>
                   </div>
-                  <CardDescription className="flex items-center gap-1">
-                    <MapPin className="h-4 w-4" />
-                    {well.location}
+                  <CardDescription className="flex items-center gap-1 text-xs sm:text-sm text-center sm:text-right">
+                    <MapPin className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+                    <span className="line-clamp-1">{well.location}</span>
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
+                <CardContent className="pt-0">
+                  <div className="space-y-1 sm:space-y-2">
+                    <div className="flex justify-between text-xs sm:text-sm">
                       <span>عمق:</span>
                       <span className="font-medium">{well.depth.toLocaleString()} متر</span>
                     </div>
-                    <div className="flex justify-between text-sm">
+                    <div className="flex justify-between text-xs sm:text-sm">
                       <span>آخرین به‌روزرسانی:</span>
-                      <span className="font-medium">
-                        {new Date(well.lastUpdate).toLocaleString('fa-IR')}
+                      <span className="font-medium text-xs sm:text-sm">
+                        {new Date(well.lastUpdate).toLocaleString('fa-IR', {
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
                       </span>
                     </div>
                   </div>
@@ -226,15 +175,15 @@ export default function Home() {
 
         {/* Selected Well Details */}
         {selectedWell && (
-          <Tabs defaultValue="overview" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="overview">نمای کلی</TabsTrigger>
-              <TabsTrigger value="parameters">پارامترهای حفاری</TabsTrigger>
-              <TabsTrigger value="witsml">داده‌های WITSML</TabsTrigger>
-              <TabsTrigger value="history">تاریخچه</TabsTrigger>
+          <Tabs defaultValue="overview" className="space-y-4 sm:space-y-6">
+            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1 sm:gap-2">
+              <TabsTrigger value="overview" className="text-xs sm:text-sm px-2 py-1 sm:px-3 sm:py-2">نمای کلی</TabsTrigger>
+              <TabsTrigger value="parameters" className="text-xs sm:text-sm px-2 py-1 sm:px-3 sm:py-2">پارامترها</TabsTrigger>
+              <TabsTrigger value="witsml" className="text-xs sm:text-sm px-2 py-1 sm:px-3 sm:py-2">WITSML</TabsTrigger>
+              <TabsTrigger value="history" className="text-xs sm:text-sm px-2 py-1 sm:px-3 sm:py-2">تاریخچه</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="overview" className="space-y-6">
+            <TabsContent value="overview" className="space-y-4 sm:space-y-6">
               {selectedWell && (
                 <DepthProgressChart
                   wellId={selectedWell.id}
@@ -245,7 +194,7 @@ export default function Home() {
               )}
             </TabsContent>
 
-            <TabsContent value="parameters" className="space-y-6">
+            <TabsContent value="parameters" className="space-y-4 sm:space-y-6">
               {selectedWell && (
                 <DrillingParametersChart
                   wellId={selectedWell.id}
@@ -255,7 +204,7 @@ export default function Home() {
               )}
             </TabsContent>
 
-            <TabsContent value="witsml" className="space-y-6">
+            <TabsContent value="witsml" className="space-y-4 sm:space-y-6">
               {selectedWell && (
                 <WitsmlDataViewer
                   wellId={selectedWell.id}
@@ -264,45 +213,45 @@ export default function Home() {
               )}
             </TabsContent>
 
-            <TabsContent value="history" className="space-y-6">
+            <TabsContent value="history" className="space-y-4 sm:space-y-6">
               <Card>
-                <CardHeader>
-                  <CardTitle>تاریخچه عملیات</CardTitle>
-                  <CardDescription>تاریخچه فعالیت‌های چاه {selectedWell.name}</CardDescription>
+                <CardHeader className="pb-3 sm:pb-4">
+                  <CardTitle className="text-lg sm:text-xl text-center sm:text-right">تاریخچه عملیات</CardTitle>
+                  <CardDescription className="text-sm sm:text-base text-center sm:text-right">تاریخچه فعالیت‌های چاه {selectedWell.name}</CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="border-l-2 border-blue-500 pl-4">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Zap className="h-4 w-4 text-blue-500" />
-                        <span className="font-medium">شروع حفاری</span>
-                        <span className="text-sm text-gray-500">1402-10-15</span>
+                <CardContent className="pt-0">
+                  <div className="space-y-3 sm:space-y-4">
+                    <div className="border-l-2 border-blue-500 pl-3 sm:pl-4">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2 mb-1">
+                        <Zap className="h-4 w-4 text-blue-500 flex-shrink-0" />
+                        <span className="font-medium text-sm sm:text-base">شروع حفاری</span>
+                        <span className="text-xs sm:text-sm text-gray-500">1402-10-15</span>
                       </div>
-                      <p className="text-sm text-gray-600">شروع عملیات حفاری چاه</p>
+                      <p className="text-xs sm:text-sm text-gray-600">شروع عملیات حفاری چاه</p>
                     </div>
-                    <div className="border-l-2 border-green-500 pl-4">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Activity className="h-4 w-4 text-green-500" />
-                        <span className="font-medium">رسیدن به عمیت 2000 متر</span>
-                        <span className="text-sm text-gray-500">1402-11-20</span>
+                    <div className="border-l-2 border-green-500 pl-3 sm:pl-4">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2 mb-1">
+                        <Activity className="h-4 w-4 text-green-500 flex-shrink-0" />
+                        <span className="font-medium text-sm sm:text-base">رسیدن به عمیت 2000 متر</span>
+                        <span className="text-xs sm:text-sm text-gray-500">1402-11-20</span>
                       </div>
-                      <p className="text-sm text-gray-600">تکمیل مرحله اول حفاری</p>
+                      <p className="text-xs sm:text-sm text-gray-600">تکمیل مرحله اول حفاری</p>
                     </div>
-                    <div className="border-l-2 border-yellow-500 pl-4">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Thermometer className="h-4 w-4 text-yellow-500" />
-                        <span className="font-medium">تغییر مته حفاری</span>
-                        <span className="text-sm text-gray-500">1402-12-01</span>
+                    <div className="border-l-2 border-yellow-500 pl-3 sm:pl-4">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2 mb-1">
+                        <Thermometer className="h-4 w-4 text-yellow-500 flex-shrink-0" />
+                        <span className="font-medium text-sm sm:text-base">تغییر مته حفاری</span>
+                        <span className="text-xs sm:text-sm text-gray-500">1402-12-01</span>
                       </div>
-                      <p className="text-sm text-gray-600">تعویض مته برای ادامه حفاری</p>
+                      <p className="text-xs sm:text-sm text-gray-600">تعویض مته برای ادامه حفاری</p>
                     </div>
-                    <div className="border-l-2 border-purple-500 pl-4">
-                      <div className="flex items-center gap-2 mb-1">
-                        <TrendingUp className="h-4 w-4 text-purple-500" />
-                        <span className="font-medium">وضعیت فعلی</span>
-                        <span className="text-sm text-gray-500">1403-01-15</span>
+                    <div className="border-l-2 border-purple-500 pl-3 sm:pl-4">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2 mb-1">
+                        <TrendingUp className="h-4 w-4 text-purple-500 flex-shrink-0" />
+                        <span className="font-medium text-sm sm:text-base">وضعیت فعلی</span>
+                        <span className="text-xs sm:text-sm text-gray-500">1403-01-15</span>
                       </div>
-                      <p className="text-sm text-gray-600">در حال حفاری در عمیت {selectedWell.depth} متر</p>
+                      <p className="text-xs sm:text-sm text-gray-600">در حال حفاری در عمیت {selectedWell.depth} متر</p>
                     </div>
                   </div>
                 </CardContent>

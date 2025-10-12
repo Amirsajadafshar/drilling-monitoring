@@ -151,19 +151,19 @@ export function DrillingParametersChart({ wellId, parameters, timeRange = '1h' }
 
   return (
     <Card>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <div>
-            <CardTitle className="flex items-center gap-2">
-              <Activity className="h-5 w-5" />
+      <CardHeader className="pb-3 sm:pb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-2">
+          <div className="text-center sm:text-right">
+            <CardTitle className="flex items-center justify-center sm:justify-start gap-2 text-base sm:text-lg">
+              <Activity className="h-4 w-4 sm:h-5 sm:w-5" />
               پارامترهای حفاری
             </CardTitle>
-            <CardDescription>
-              نمایش实时 پارامترهای حفاری برای چاه {wellId}
+            <CardDescription className="text-xs sm:text-sm">
+              نمایش پارامترهای زنده حفاری برای چاه {wellId}
             </CardDescription>
           </div>
-          <div className="flex items-center gap-2">
-            <Badge variant={isConnected ? "default" : "secondary"} className="flex items-center gap-1">
+          <div className="flex flex-col sm:flex-row items-center gap-2">
+            <Badge variant={isConnected ? "default" : "secondary"} className="flex items-center gap-1 text-xs sm:text-sm">
               {isConnected ? <Wifi className="h-3 w-3" /> : <WifiOff className="h-3 w-3" />}
               {isConnected ? 'متصل' : 'قطع'}
             </Badge>
@@ -172,22 +172,23 @@ export function DrillingParametersChart({ wellId, parameters, timeRange = '1h' }
               size="sm"
               onClick={handleSimulationToggle}
               disabled={!isConnected}
+              className="text-xs sm:text-sm"
             >
-              {simulationRunning ? <Pause className="h-4 w-4 mr-1" /> : <Play className="h-4 w-4 mr-1" />}
+              {simulationRunning ? <Pause className="h-3 w-3 sm:h-4 sm:w-4 mr-1" /> : <Play className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />}
               {simulationRunning ? 'توقف شبیه‌سازی' : 'شروع شبیه‌سازی'}
             </Button>
           </div>
         </div>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
+      <CardContent className="pt-0">
+        <div className="space-y-3 sm:space-y-4">
           {/* Parameter Selection */}
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1 sm:gap-2 justify-center sm:justify-start">
             {parameters.map((param) => (
               <button
                 key={param.name}
                 onClick={() => toggleParameter(param.name)}
-                className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
+                className={`px-2 py-1 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-medium transition-colors ${
                   selectedParameters.includes(param.name)
                     ? 'bg-blue-100 text-blue-800 border border-blue-300'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -203,14 +204,15 @@ export function DrillingParametersChart({ wellId, parameters, timeRange = '1h' }
 
           {/* Chart */}
           {selectedParameters.length > 0 ? (
-            <ChartContainer config={chartConfig} className="h-[400px]">
+            <ChartContainer config={chartConfig} className="h-[300px] sm:h-[400px]">
               <LineChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis 
                   dataKey="time" 
-                  tick={{ fontSize: 12 }}
+                  tick={{ fontSize: 10 }}
+                  interval={Math.ceil(chartData.length / 6)}
                 />
-                <YAxis tick={{ fontSize: 12 }} />
+                <YAxis tick={{ fontSize: 10 }} />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <Legend />
                 {selectedParameters.map((paramName) => (
@@ -220,23 +222,23 @@ export function DrillingParametersChart({ wellId, parameters, timeRange = '1h' }
                     dataKey={paramName}
                     stroke={chartConfig[paramName]?.color || '#2563eb'}
                     strokeWidth={2}
-                    dot={{ r: 4 }}
-                    activeDot={{ r: 6 }}
+                    dot={{ r: 3 }}
+                    activeDot={{ r: 5 }}
                   />
                 ))}
               </LineChart>
             </ChartContainer>
           ) : (
-            <div className="h-[400px] flex items-center justify-center text-gray-500">
+            <div className="h-[300px] sm:h-[400px] flex items-center justify-center text-gray-500 text-sm">
               لطفاً حداقل یک پارامتر را برای نمایش انتخاب کنید
             </div>
           )}
 
           {/* Real-time Updates Indicator */}
           {simulationRunning && (
-            <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              <span className="text-sm text-green-700">در حال دریافت داده‌های实时</span>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-lg">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse flex-shrink-0"></div>
+              <span className="text-sm text-green-700">در حال دریافت داده‌های زنده</span>
               <span className="text-xs text-green-600">
                 ({parameterUpdates.length} به‌روزرسانی دریافت شده)
               </span>
@@ -244,7 +246,7 @@ export function DrillingParametersChart({ wellId, parameters, timeRange = '1h' }
           )}
 
           {/* Current Status */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4">
             {parameters.map((param) => {
               const latestUpdate = parameterUpdates
                 .filter(update => update.name === param.name)
@@ -254,19 +256,19 @@ export function DrillingParametersChart({ wellId, parameters, timeRange = '1h' }
               const currentStatus = latestUpdate?.status || param.status
               
               return (
-                <div key={param.name} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div>
-                    <div className="font-medium">{param.name}</div>
-                    <div className="text-sm text-gray-600">
+                <div key={param.name} className="flex flex-col sm:flex-row sm:items-center justify-between p-2 sm:p-3 bg-gray-50 rounded-lg gap-2 sm:gap-0">
+                  <div className="text-center sm:text-right">
+                    <div className="font-medium text-sm sm:text-base">{param.name}</div>
+                    <div className="text-xs sm:text-sm text-gray-600">
                       {currentValue.toLocaleString()} {param.unit}
                       {latestUpdate && (
-                        <span className="text-xs text-green-600 mr-2">
-                          (实时)
+                        <span className="text-xs text-green-600 mr-2 block sm:inline">
+                          (زنده)
                         </span>
                       )}
                     </div>
                   </div>
-                  <Badge className={`${getStatusColor(currentStatus)} text-white`}>
+                  <Badge className={`${getStatusColor(currentStatus)} text-white text-xs sm:text-sm`}>
                     {getStatusText(currentStatus)}
                   </Badge>
                 </div>

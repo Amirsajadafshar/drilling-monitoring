@@ -85,27 +85,27 @@ export function DepthProgressChart({
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6">
       {/* Overall Progress */}
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Gauge className="h-5 w-5" />
+        <CardHeader className="pb-3 sm:pb-6">
+          <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+            <Gauge className="h-4 w-4 sm:h-5 sm:w-5" />
             پیشرفت کلی حفاری
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-xs sm:text-sm">
             وضعیت پیشرفت حفاری چاه {wellId}
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-6">
+        <CardContent className="pt-0">
+          <div className="space-y-4 sm:space-y-6">
             {/* Progress Overview */}
             <div className="space-y-2">
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-xs sm:text-sm">
                 <span>پیشرفت کلی</span>
                 <span>{progressPercentage.toFixed(1)}%</span>
               </div>
-              <Progress value={progressPercentage} className="w-full" />
+              <Progress value={progressPercentage} className="w-full h-2 sm:h-4" />
               <div className="flex justify-between text-xs text-gray-600">
                 <span>عمق فعلی: {currentDepth.toLocaleString()} متر</span>
                 <span>عمیت هدف: {targetDepth.toLocaleString()} متر</span>
@@ -113,25 +113,25 @@ export function DepthProgressChart({
             </div>
 
             {/* Statistics */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="text-center p-3 bg-blue-50 rounded-lg">
-                <div className="text-2xl font-bold text-blue-600">
+            <div className="grid grid-cols-2 gap-2 sm:gap-4">
+              <div className="text-center p-2 sm:p-3 bg-blue-50 rounded-lg">
+                <div className="text-lg sm:text-2xl font-bold text-blue-600">
                   {remainingDepth.toLocaleString()}
                 </div>
-                <div className="text-sm text-gray-600">متر باقیمانده</div>
+                <div className="text-xs sm:text-sm text-gray-600">متر باقیمانده</div>
               </div>
-              <div className="text-center p-3 bg-green-50 rounded-lg">
-                <div className="text-2xl font-bold text-green-600">
+              <div className="text-center p-2 sm:p-3 bg-green-50 rounded-lg">
+                <div className="text-lg sm:text-2xl font-bold text-green-600">
                   {estimatedDays}
                 </div>
-                <div className="text-sm text-gray-600">روز تخمینی</div>
+                <div className="text-xs sm:text-sm text-gray-600">روز تخمینی</div>
               </div>
             </div>
 
             {/* Status */}
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">وضعیت:</span>
-              <Badge className="bg-blue-500 text-white">
+              <span className="text-xs sm:text-sm font-medium">وضعیت:</span>
+              <Badge className="bg-blue-500 text-white text-xs sm:text-sm">
                 <TrendingUp className="h-3 w-3 mr-1" />
                 در حال پیشرفت
               </Badge>
@@ -142,24 +142,25 @@ export function DepthProgressChart({
 
       {/* Depth Progress Chart */}
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Target className="h-5 w-5" />
+        <CardHeader className="pb-3 sm:pb-6">
+          <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+            <Target className="h-4 w-4 sm:h-5 sm:w-5" />
             نمودار پیشرفت عمق
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-xs sm:text-sm">
             پیشرفت عمق حفاری در طول زمان
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <ChartContainer config={progressChartConfig} className="h-[300px]">
+        <CardContent className="pt-0">
+          <ChartContainer config={progressChartConfig} className="h-[250px] sm:h-[300px]">
             <AreaChart data={progressData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis 
                 dataKey="date" 
-                tick={{ fontSize: 12 }}
+                tick={{ fontSize: 10 }}
+                interval={Math.ceil(progressData.length / 6)}
               />
-              <YAxis tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 10 }} />
               <ChartTooltip content={<ChartTooltipContent />} />
               <Area
                 type="monotone"
@@ -176,24 +177,24 @@ export function DepthProgressChart({
 
       {/* Daily Progress */}
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Clock className="h-5 w-5" />
+        <CardHeader className="pb-3 sm:pb-6">
+          <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+            <Clock className="h-4 w-4 sm:h-5 sm:w-5" />
             پیشرفت روزانه
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-xs sm:text-sm">
             پیشرفت حفاری در 7 روز گذشته
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <ChartContainer config={dailyChartConfig} className="h-[300px]">
+        <CardContent className="pt-0">
+          <ChartContainer config={dailyChartConfig} className="h-[250px] sm:h-[300px]">
             <AreaChart data={dailyProgress}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis 
                 dataKey="day" 
-                tick={{ fontSize: 12 }}
+                tick={{ fontSize: 10 }}
               />
-              <YAxis tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 10 }} />
               <ChartTooltip content={<ChartTooltipContent />} />
               <Area
                 type="monotone"
@@ -210,37 +211,37 @@ export function DepthProgressChart({
 
       {/* Well Information */}
       <Card>
-        <CardHeader>
-          <CardTitle>اطلاعات چاه</CardTitle>
-          <CardDescription>
+        <CardHeader className="pb-3 sm:pb-6">
+          <CardTitle className="text-base sm:text-lg">اطلاعات چاه</CardTitle>
+          <CardDescription className="text-xs sm:text-sm">
             جزئیات فنی چاه {wellId}
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+        <CardContent className="pt-0">
+          <div className="space-y-3 sm:space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div>
-                <label className="text-sm font-medium">شناسه چاه</label>
-                <p className="text-lg font-mono">{wellId}</p>
+                <label className="text-xs sm:text-sm font-medium">شناسه چاه</label>
+                <p className="text-sm sm:text-lg font-mono">{wellId}</p>
               </div>
               <div>
-                <label className="text-sm font-medium">تاریخ شروع</label>
-                <p className="text-lg">
+                <label className="text-xs sm:text-sm font-medium">تاریخ شروع</label>
+                <p className="text-sm sm:text-lg">
                   {spudDate ? new Date(spudDate).toLocaleDateString('fa-IR') : 'نامشخص'}
                 </p>
               </div>
             </div>
             
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
+            <div className="space-y-1 sm:space-y-2">
+              <div className="flex justify-between text-xs sm:text-sm">
                 <span>میانگین سرعت حفاری</span>
                 <span className="font-medium">142 متر/روز</span>
               </div>
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-xs sm:text-sm">
                 <span>بیشترین سرعت ثبت شده</span>
                 <span className="font-medium">285 متر/روز</span>
               </div>
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-xs sm:text-sm">
                 <span>کل زمان فعالیت</span>
                 <span className="font-medium">{Math.floor(currentDepth / 142)} روز</span>
               </div>

@@ -188,28 +188,28 @@ export function WitsmlDataViewer({ wellId, witsmlData }: WitsmlDataViewerProps) 
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Database className="h-5 w-5" />
+      <CardHeader className="pb-3 sm:pb-6">
+        <CardTitle className="flex items-center justify-center sm:justify-start gap-2 text-base sm:text-lg">
+          <Database className="h-4 w-4 sm:h-5 sm:w-5" />
           داده‌های WITSML
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-xs sm:text-sm text-center sm:text-right">
           نمایش و مدیریت داده‌های استاندارد WITSML برای چاه {wellId}
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
+      <CardContent className="pt-0">
+        <div className="space-y-3 sm:space-y-4">
           {/* Data Selection */}
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1 sm:gap-2 justify-center sm:justify-start">
             {witsmlData.map((data) => (
               <Button
                 key={data.id}
                 variant={selectedData?.id === data.id ? "default" : "outline"}
                 size="sm"
                 onClick={() => setSelectedData(data)}
-                className="flex items-center gap-2"
+                className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm"
               >
-                <FileText className="h-4 w-4" />
+                <FileText className="h-3 w-3 sm:h-4 sm:w-4" />
                 {formatDataType(data.dataType)}
                 <Badge variant="secondary" className="text-xs">
                   v{data.version}
@@ -219,20 +219,21 @@ export function WitsmlDataViewer({ wellId, witsmlData }: WitsmlDataViewerProps) 
           </div>
 
           {selectedData && (
-            <Tabs defaultValue="viewer" className="space-y-4">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="viewer">مشاهده داده</TabsTrigger>
-                <TabsTrigger value="info">اطلاعات فایل</TabsTrigger>
+            <Tabs defaultValue="viewer" className="space-y-3 sm:space-y-4">
+              <TabsList className="grid w-full grid-cols-2 gap-1 sm:gap-2">
+                <TabsTrigger value="viewer" className="text-xs sm:text-sm px-2 py-1 sm:px-3 sm:py-2">مشاهده داده</TabsTrigger>
+                <TabsTrigger value="info" className="text-xs sm:text-sm px-2 py-1 sm:px-3 sm:py-2">اطلاعات فایل</TabsTrigger>
               </TabsList>
 
-              <TabsContent value="viewer" className="space-y-4">
+              <TabsContent value="viewer" className="space-y-3 sm:space-y-4">
                 {/* Format Selection */}
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-2">
+                  <div className="flex flex-wrap gap-1 sm:gap-2 justify-center">
                     <Button
                       variant={viewFormat === 'xml' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setViewFormat('xml')}
+                      className="text-xs sm:text-sm"
                     >
                       XML
                     </Button>
@@ -240,6 +241,7 @@ export function WitsmlDataViewer({ wellId, witsmlData }: WitsmlDataViewerProps) 
                       variant={viewFormat === 'json' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setViewFormat('json')}
+                      className="text-xs sm:text-sm"
                     >
                       JSON
                     </Button>
@@ -247,79 +249,82 @@ export function WitsmlDataViewer({ wellId, witsmlData }: WitsmlDataViewerProps) 
                       variant={viewFormat === 'raw' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setViewFormat('raw')}
+                      className="text-xs sm:text-sm"
                     >
                       Raw
                     </Button>
                   </div>
                   
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-1 sm:gap-2 justify-center">
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => downloadData('xml')}
+                      className="text-xs sm:text-sm"
                     >
-                      <Download className="h-4 w-4 mr-1" />
+                      <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
                       XML
                     </Button>
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => downloadData('json')}
+                      className="text-xs sm:text-sm"
                     >
-                      <Download className="h-4 w-4 mr-1" />
+                      <Download className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
                       JSON
                     </Button>
                   </div>
                 </div>
 
                 {/* Data Display */}
-                <ScrollArea className="h-[400px] w-full border rounded-lg">
-                  <pre className="p-4 text-sm overflow-x-auto bg-gray-50">
+                <ScrollArea className="h-[300px] sm:h-[400px] w-full border rounded-lg">
+                  <pre className="p-2 sm:p-4 text-xs sm:text-sm overflow-x-auto bg-gray-50">
                     <code>{getDisplayContent()}</code>
                   </pre>
                 </ScrollArea>
               </TabsContent>
 
-              <TabsContent value="info" className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-3">
+              <TabsContent value="info" className="space-y-3 sm:space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                  <div className="space-y-2 sm:space-y-3">
                     <div>
-                      <label className="text-sm font-medium">شناسه داده</label>
-                      <p className="text-lg font-mono">{selectedData.id}</p>
+                      <label className="text-xs sm:text-sm font-medium">شناسه داده</label>
+                      <p className="text-sm sm:text-lg font-mono">{selectedData.id}</p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium">نوع داده</label>
-                      <p className="text-lg">{formatDataType(selectedData.dataType)}</p>
+                      <label className="text-xs sm:text-sm font-medium">نوع داده</label>
+                      <p className="text-sm sm:text-lg">{formatDataType(selectedData.dataType)}</p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium">نسخه WITSML</label>
-                      <p className="text-lg">{selectedData.version}</p>
+                      <label className="text-xs sm:text-sm font-medium">نسخه WITSML</label>
+                      <p className="text-sm sm:text-lg">{selectedData.version}</p>
                     </div>
                   </div>
                   
-                  <div className="space-y-3">
+                  <div className="space-y-2 sm:space-y-3">
                     <div>
-                      <label className="text-sm font-medium">تاریخ ایجاد</label>
-                      <p className="text-lg">
+                      <label className="text-xs sm:text-sm font-medium">تاریخ ایجاد</label>
+                      <p className="text-sm sm:text-lg">
                         {new Date(selectedData.timestamp).toLocaleString('fa-IR')}
                       </p>
                     </div>
                     <div>
-                      <label className="text-sm font-medium">فرمت‌های موجود</label>
-                      <div className="flex gap-2 mt-1">
-                        <Badge variant="outline">
+                      <label className="text-xs sm:text-sm font-medium">فرمت‌های موجود</label>
+                      <div className="flex flex-wrap gap-1 sm:gap-2 mt-1">
+                        <Badge variant="outline" className="text-xs">
                           <Eye className="h-3 w-3 mr-1" />
                           XML
                         </Badge>
-                        <Badge variant="outline">
+                        <Badge variant="outline" className="text-xs">
                           <Eye className="h-3 w-3 mr-1" />
                           JSON
                         </Badge>
                       </div>
                     </div>
                     <div>
-                      <label className="text-sm font-medium">اندازه تقریبی</label>
-                      <p className="text-lg">~2.5 KB</p>
+                      <label className="text-xs sm:text-sm font-medium">اندازه تقریبی</label>
+                      <p className="text-sm sm:text-lg">~2.5 KB</p>
                     </div>
                   </div>
                 </div>
@@ -328,10 +333,10 @@ export function WitsmlDataViewer({ wellId, witsmlData }: WitsmlDataViewerProps) 
           )}
 
           {!selectedData && (
-            <div className="text-center py-8 text-gray-500">
-              <Database className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-              <p>هیچ داده WITSML برای نمایش وجود ندارد</p>
-              <p className="text-sm">لطفاً یک داده از لیست بالا انتخاب کنید</p>
+            <div className="text-center py-6 sm:py-8 text-gray-500">
+              <Database className="h-8 w-8 sm:h-12 sm:w-12 mx-auto mb-2 sm:mb-4 text-gray-400" />
+              <p className="text-sm sm:text-base">هیچ داده WITSML برای نمایش وجود ندارد</p>
+              <p className="text-xs sm:text-sm">لطفاً یک داده از لیست بالا انتخاب کنید</p>
             </div>
           )}
         </div>
